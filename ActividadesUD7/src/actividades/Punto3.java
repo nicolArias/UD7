@@ -47,55 +47,61 @@ public class Punto3 {
 	}
 
 	public void menu() {
-		String opcion=JOptionPane.showInputDialog("Elija acción a realizar:"
-				+ "\n1. Añadir producto"
-				+ "\n2. Consultar inventario"
-				+ "\n3. Consulta por producto");
 		
-		//Menú de opciones
-		if(opcion.equals("1")) {
-			agregarProducto(getInventario());
-		}else if(opcion.equals("2")) {
-			allInventario();
-		}else if(opcion.equals("3")) {
-			prodInventario();
+		try {
+			String opcion=JOptionPane.showInputDialog("Elija acción a realizar:"
+					+ "\n1. Añadir producto"
+					+ "\n2. Consultar inventario"
+					+ "\n3. Consulta por producto");
+			
+			//Menú de opciones
+			if(opcion.equals("1")) {
+				agregarProducto();
+			}else if(opcion.equals("2")) {
+				allInventario();
+			}else if(opcion.equals("3")) {
+				prodInventario();
+			}else {
+				System.out.println("No selecciono ninguna opción");
+			}
+		}catch(NullPointerException e) {
+			System.out.println("Salio de la aplicación");
 		}
+		
 	}
 	
 	
-	public void agregarProducto(Hashtable<String,Integer> inv) {
+	public void agregarProducto() {
 		
-		Hashtable<String,Integer> inv2=inv;
+		Hashtable<String,Integer> inv2=inventario;
 		
-		Enumeration llaves=inv2.keys();
 		Enumeration<Integer> enumeration=inv2.elements();
 		
 		String newProducto=JOptionPane.showInputDialog("Nombre producto:");
 		int cantProducto=Integer.parseInt(JOptionPane.showInputDialog("Cantidad Producto:"));
-		System.out.println("holaa");
+		
 		
 		
 		//NOTA: SE ME ESTA GENERANDO UN CICLO INFINITO, MEJORAR 
 		while(enumeration.hasMoreElements()) {
-			System.out.println("entro");
+	
+			
 			//Esta condicion valida si el producto que ingresamos esta en el diccionario para sumar la cantidad que agregamos con la que ya estaba
-			if(inv.containsKey(newProducto)) {
+			if(inventario.containsKey(newProducto)) {
 				//Extrae el valor (en este caso un entero) que se encuentra en la llave que ingresamos por teclado
-				int cant=inv.get(newProducto);
+				int cant=inventario.get(newProducto);
 				//Sumamos la cantidad que habia con la que ingresamos
 				int sumaCantidad=cant+cantProducto;
 				inv2.remove(newProducto);
 				inv2.put(newProducto,sumaCantidad);
-				setInventario(inv2);
+				//setInventario(inv2);
 				break;
 			}else {
-				inv.put(newProducto, cantProducto);
-				
+				inv2.put(newProducto, cantProducto);
+				break;
 			}
 		}
-		
 	
-		System.out.println(inv2.toString());
 		menu();
 	}
 	

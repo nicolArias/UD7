@@ -7,36 +7,17 @@ import java.util.Hashtable;
 import javax.swing.JOptionPane;
 
 public class GestionVentas {
-		/*4) Combina los métodos generados en las actividades 2 y 3
-			creando una aplicación que gestione ventas y control de stock en
-			una misma interfaz. Utiliza para ello las estructuras de datos que
-			creas conveniente.
-			
-			Crea una aplicación que gestione el flujo de ventas de una caja de supermercado. El programa guardara la cantidades del
-	carrito de compra dentro de una lista. Mostrará por pantalla la siguiente informacion:
-	• IVA aplicado (21% o 4%)
-	• precio total bruto y precio mas IVA.
-	• Numero de artículos comprados.
-	• Cantidad pagada.
-	• Cambio a devolver al cliente.
-	
-	Crea una base de datos de 10 artículos para controlar el stock de productos de una tienda por medio de un diccionario
-		de datos (articulo:cantidad). El usuario podrá añadir, por medio de interfaz visual artículos nuevos y cantidades de estos. El
-		usario podrá consultar la información almacenada en el diccionario referente a un articulo concreto e incluso listar toda
-		la información en la terminal del programa.
-		 */
-	
+
+	Inventario inventario=new Inventario();
 		
-	public static void gestionVentas() {
-		GestionVentas gv=new GestionVentas();
-		
-		gv.menu();
+	public void gestionVentas() {
+		menu();
 		
 	}
 	
 	public void menu() {
 		
-		//inventario=new Inventario();
+		try {
 		String opcion=JOptionPane.showInputDialog("Elija acción a realizar:"
 				+ "\n1.Venta Producto"
 				+ "\n2. Añadir producto"
@@ -47,30 +28,34 @@ public class GestionVentas {
 		if(opcion.equals("1")) {
 			validarProducto();
 		}else if(opcion.equals("2")) {
-			//agregarProductoInventario(getInventario());
+			inventario.agregarProducto();
 		}else if(opcion.equals("3")) {
-			//allInventario();
+			System.out.println(inventario.allInventario());
+			menu();
 		}else if(opcion.equals("4")) {
-			//prodInventario();
+			System.out.println(inventario.prodInventario());
+			menu();
+		}else {
+		System.out.println("No selecciono ninguna opción");
 		}
+		}catch(NullPointerException e) {
+			System.out.println("Salio de la aplicación");
+		}
+
 	}
 	
 	public void validarProducto() {
-		Inventario inventario=new Inventario();
-		
 		Hashtable<String,Integer> inv=inventario.getInventario();
-		Enumeration llaves=inv.keys();
+		Enumeration<String> llaves=inv.keys();
 		
 		Enumeration<Integer> enumeration=inv.elements();
-		boolean respuesta=false;
-		
 		String nombreProd=JOptionPane.showInputDialog("Ingrese nombre producto");
 		int cantProducto=Integer.parseInt(JOptionPane.showInputDialog("Cantidad Producto:"));
 		
-		while(enumeration.hasMoreElements()) {
-			System.out.println("entro");
+		while(llaves.hasMoreElements()) {
+			
 			//Esta condicion valida si el producto que ingresamos esta en el diccionario para restar la cantidad que agregamos con la que ya estaba
-			if(inv.containsKey(nombreProd)) {
+			if(inv.containsKey(nombreProd) && cantProducto<enumeration.nextElement()) {
 				//Extrae el valor (en este caso un entero) que se encuentra en la llave que ingresamos por teclado
 				int cant=inv.get(nombreProd);
 				//Restamos la cantidad que habia con la que ingresamos
@@ -81,7 +66,9 @@ public class GestionVentas {
 				ventaProd(cantProducto);
 				break;
 			}else {
-				respuesta=false;
+				JOptionPane.showMessageDialog(null, "El producto que desea comprar no se encuentra en Stock");
+				menu();
+				break;
 			}
 		}	
 	}
@@ -152,8 +139,12 @@ public class GestionVentas {
 			
 			
 		}while(contador2<1);
-
+		menu();
+	
 	}
+	
+	
+	
 		
 
 

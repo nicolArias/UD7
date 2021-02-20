@@ -2,6 +2,8 @@ package actividades;
 
 import javax.swing.JOptionPane;
 
+import punto4.GestionVentas;
+
 public class ActividadesApp {
 
 	public static void main(String[] args) {
@@ -23,8 +25,8 @@ public class ActividadesApp {
 			break;
 		
 		case(4):
-			
-			punto4.GestionVentas.gestionVentas();
+			GestionVentas gv=new GestionVentas();
+			gv.gestionVentas();
 			break;
 		default:
 			JOptionPane.showMessageDialog(null, "El número ingresado no coincide con ninguna actividad");
